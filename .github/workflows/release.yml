@@ -28,6 +28,7 @@ jobs:
         run: |
           echo "Check ubuntu version..."
           DISTRIBUTION=`sudo lsb_release -a`
+          echo ${DISTRIBUTION}
           
           echo "Adding postgres repository..."
           curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/apt.postgresql.org.gpg >/dev/null
