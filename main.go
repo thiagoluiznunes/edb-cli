@@ -15,6 +15,17 @@ import (
 func main() {
 
 	args := os.Args
+	if len(args) > 1 {
+		switch args[1] {
+		case "-h":
+			fmt.Println(consts.HELP_INFO_TEXT)
+			return
+		case "--help":
+			fmt.Println(consts.HELP_INFO_TEXT)
+			return
+		}
+	}
+
 	var kubeconfig *string
 	if home := homedir.HomeDir(); home != "" {
 		kubeconfig = flag.String("kubeconfig", filepath.Join(home, ".kube", "config"), "(optional) absolute path to the kubeconfig file")
@@ -36,10 +47,6 @@ func main() {
 
 	if len(args) > 1 {
 		switch args[1] {
-		case "-h":
-			fmt.Println(consts.HELP_INFO_TEXT)
-		case "--help":
-			fmt.Println(consts.HELP_INFO_TEXT)
 		case "get":
 			if len(args) > 2 {
 				switch args[2] {

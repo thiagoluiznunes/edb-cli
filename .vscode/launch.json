@@ -11,10 +11,7 @@
             "mode": "auto",
             "program": "${workspaceFolder}",
             "args": [
-                "get",
-                "pods",
-                "-n",
-                "kube-system"
+                "--help"
             ]
         }
     ]
