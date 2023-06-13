@@ -9,7 +9,7 @@ It is necessary to install previously Go language and Make.
 * **[Make](https://www.gnu.org/software/make/#download)** :white_check_mark:
 
 ## Release EDB CLI
-- After installing the requirements run the followed command to build a new release of the RPN cli.
+- After installing the requirements run the followed command to build a new release of the EDB CLI.
 ```console
 $ make release
 ```
