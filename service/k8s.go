@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"edb-assessment/consts"
 	"fmt"
 	"math"
 	"strings"
@@ -31,7 +32,6 @@ func (s *Service) InitClusterConfig(config *rest.Config) (err error) {
 	if err != nil {
 		return err
 	}
-
 	return nil
 }
 
@@ -41,9 +41,13 @@ func (s *Service) GetPods(namespace string) {
 		namespace = "default"
 	}
 
-	pods, err := s.clientSet.CoreV1().Pods("").List(context.TODO(), metav1.ListOptions{})
+	pods, err := s.clientSet.CoreV1().Pods(namespace).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
 		fmt.Println(err)
+		return
+	}
+	if len(pods.Items) < 1 {
+		fmt.Println(consts.NO_RESOURCES)
 		return
 	}
 
@@ -56,22 +60,32 @@ func (s *Service) GetPods(namespace string) {
 	for _, pod := range pods.Items {
 		currentTime := time.Now()
 		podAge := currentTime.Sub(pod.Status.StartTime.Time).Minutes()
-		podAgeLabel := fmt.Sprintf("%vm", math.Round(podAge))
+		podAgeLabel := fmt.Sprintf("%vm", math.Trunc(podAge))
 		readyContainers := GetReadyContainers(pod)
+		restarContainers := GetRestartContainers(pod)
 
-		tbl.AddRow(pod.Name, readyContainers, pod.Status.Phase, "", podAgeLabel)
+		tbl.AddRow(pod.Name, readyContainers, pod.Status.Phase, restarContainers, podAgeLabel)
 	}
 	tbl.Print()
 }
 
+func GetRestartContainers(pod v1.Pod) (restartContainers int32) {
+
+	restartContainers = 0
+	for _, containerStatus := range pod.Status.ContainerStatuses {
+		restartContainers += containerStatus.RestartCount
+	}
+	return restartContainers
+}
+
 func GetReadyContainers(pod v1.Pod) string {
 
-	containersSize := len(pod.Spec.Containers)
+	amountOfContainers := len(pod.Spec.Containers)
 	readyContainers := 0
 	for _, containerStatus := range pod.Status.ContainerStatuses {
 		if containerStatus.Ready {
 			readyContainers += 1
 		}
 	}
-	return fmt.Sprintf("%v/%v", readyContainers, containersSize)
+	return fmt.Sprintf("%v/%v", readyContainers, amountOfContainers)
 }

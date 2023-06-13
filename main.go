@@ -26,11 +26,11 @@ func main() {
 	// use the current context in kubeconfig
 	config, err := clientcmd.BuildConfigFromFlags("", *kubeconfig)
 	if err != nil {
-		panic(err.Error())
+		fmt.Println(err)
 	}
 
 	k8sService := service.NewK8SService()
-	if err := k8sService.InitClusterConfig(config); err == nil {
+	if err := k8sService.InitClusterConfig(config); err != nil {
 		fmt.Println(err)
 	}
 
@@ -57,5 +57,4 @@ func main() {
 			fmt.Println(consts.UNKOWN_COMMAND)
 		}
 	}
-
 }

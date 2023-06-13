@@ -32,3 +32,5 @@ Examples:
 var UNKOWN_COMMAND string = `
 unkown command,see the help command to list the allowed commands.
 `
+
+var NO_RESOURCES string = `No resources found in internal namespace.`
