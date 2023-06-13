@@ -41,17 +41,30 @@ func main() {
 		case "--help":
 			fmt.Println(consts.HELP_INFO_TEXT)
 		case "get":
-			switch args[2] {
-			case "pods":
-				namespace := ""
-				if args[3] == "-n" && args[4] != "" {
-					namespace = args[4]
+			if len(args) > 2 {
+				switch args[2] {
+				case "pods":
+					namespace := ""
+					if len(args) > 3 {
+						switch args[3] {
+						case "-n":
+							if len(args) > 4 {
+								k8sService.GetPods(args[4])
+							} else {
+								fmt.Println(consts.FLAG_NAMESPACE_WARGNING)
+								return
+							}
+						default:
+							k8sService.GetPods(namespace)
+						}
+					} else {
+						k8sService.GetPods(namespace)
+					}
+				case "--help":
+					fmt.Println(consts.HELP_INFO_GET_PODS)
+				default:
+					fmt.Println(consts.UNKOWN_COMMAND)
 				}
-				k8sService.GetPods(namespace)
-			case "--help":
-				fmt.Println(consts.HELP_INFO_GET_PODS)
-			default:
-				fmt.Println(consts.UNKOWN_COMMAND)
 			}
 		default:
 			fmt.Println(consts.UNKOWN_COMMAND)

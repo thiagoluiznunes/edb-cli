@@ -34,3 +34,6 @@ unkown command,see the help command to list the allowed commands.
 `
 
 var NO_RESOURCES string = `No resources found in internal namespace.`
+
+var FLAG_NAMESPACE_WARGNING string = `error: flag needs an argument: 'n' in -n
+See 'kubectl get --help' for usage.`
