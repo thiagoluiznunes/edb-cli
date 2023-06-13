@@ -14,7 +14,7 @@ It is necessary to install previously Go language and Make.
 $ make release
 ```
 ## Local path must be reachable
-- After that, you need to add the /usr/local/bin path in your $PATH environment to expose the path of the new software for the whole thesystem.
+- After that, you need to add the /usr/local/bin path in your $PATH environment to expose the path of the new software for the whole system.
 ```console
 $ export PATH=$PATH:/usr/local/bin
 ```
